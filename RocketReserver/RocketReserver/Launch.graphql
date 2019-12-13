@@ -4,7 +4,7 @@ query LaunchList {
     cursor
     hasMore
     launches {
-    id
+      id
       site
     }
   }

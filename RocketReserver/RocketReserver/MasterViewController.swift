@@ -8,23 +8,18 @@
 
 import UIKit
 
+enum ListSection: Int, CaseIterable {
+  case launches
+}
+
 class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
-    var objects = [Any]()
-
-
+    var launches = [LaunchListQuery.Data.Launch.Launch]()
+   
     override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        navigationItem.leftBarButtonItem = editButtonItem
-
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-        navigationItem.rightBarButtonItem = addButton
-        if let split = splitViewController {
-            let controllers = split.viewControllers
-            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
-        }
+      super.viewDidLoad()
+      self.loadLaunches()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -32,59 +27,109 @@ class MasterViewController: UITableViewController {
         super.viewWillAppear(animated)
     }
 
-    @objc
-    func insertNewObject(_ sender: Any) {
-        objects.insert(NSDate(), at: 0)
-        let indexPath = IndexPath(row: 0, section: 0)
-        tableView.insertRows(at: [indexPath], with: .automatic)
-    }
 
     // MARK: - Segues
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
-            if let indexPath = tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
-                let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
-                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-                controller.navigationItem.leftItemsSupplementBackButton = true
-                detailViewController = controller
-            }
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      guard let selectedIndexPath = self.tableView.indexPathForSelectedRow else {
+        // Nothing is selected, nothing to do
+        return
+      }
+        
+      guard let listSection = ListSection(rawValue: selectedIndexPath.section) else {
+        assertionFailure("Invalid section")
+        return
+      }
+        
+      switch listSection {
+      case .launches:
+        guard
+          let destination = segue.destination as? UINavigationController,
+          let detail = destination.topViewController as? DetailViewController else {
+            assertionFailure("Wrong kind of destination")
+            return
         }
+        
+        let launch = self.launches[selectedIndexPath.row]
+        detail.launchID = launch.id
+        self.detailViewController = detail
+      }
     }
-
     // MARK: - Table View
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return ListSection.allCases.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return objects.count
+      guard let listSection = ListSection(rawValue: section) else {
+        assertionFailure("Invalid section")
+        return 0
+      }
+            
+      switch listSection {
+      case .launches:
+        return self.launches.count
+      }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let object = objects[indexPath.row] as! NSDate
-        cell.textLabel!.text = object.description
+      let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+
+      guard let listSection = ListSection(rawValue: indexPath.section) else {
+        assertionFailure("Invalid section")
         return cell
+      }
+        
+      switch listSection {
+      case .launches:
+        let launch = self.launches[indexPath.row]
+        cell.textLabel?.text = launch.site
+      }
+        
+      return cell
     }
+    
+    // MARK: Helper Functions
+    
+    private func loadLaunches() {
+      Network.shared.apollo
+        .fetch(query: LaunchListQuery()) { [weak self] result in
+        
+          guard let self = self else {
+            return
+          }
 
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+          defer {
+            self.tableView.reloadData()
+          }
+                
+          switch result {
+          case .success(let graphQLResult):
+            if let launchConnection = graphQLResult.data?.launches {
+              self.launches.append(contentsOf: launchConnection.launches.compactMap { $0 })
+            }
+                    
+            if let errors = graphQLResult.errors {
+              let message = errors
+                    .map { $0.localizedDescription }
+                    .joined(separator: "\n")
+              self.showErrorAlert(title: "GraphQL Error(s)",
+                                  message: message)
+            }
+          case .failure(let error):
+            self.showErrorAlert(title: "Network Error",
+                                message: error.localizedDescription)
+          }
+      }
     }
-
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            objects.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
+    
+    private func showErrorAlert(title: String, message: String) {
+      let alert = UIAlertController(title: title,
+                                    message: message,
+                                    preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .default))
+      self.present(alert, animated: true)
     }
-
-
 }
 
