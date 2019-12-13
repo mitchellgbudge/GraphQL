@@ -21,6 +21,8 @@
 		6E10919223A437FA00DCEF38 /* RocketReserverUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E10919123A437FA00DCEF38 /* RocketReserverUITests.swift */; };
 		6E1091A623A43DA000DCEF38 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 6E1091A523A43DA000DCEF38 /* Apollo */; };
 		6E1091A823A43DA000DCEF38 /* ApolloWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = 6E1091A723A43DA000DCEF38 /* ApolloWebSocket */; };
+		6E1091AE23A44D9900DCEF38 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 6E1091AD23A44D9900DCEF38 /* SDWebImage */; };
+		6E1091B023A4534C00DCEF38 /* LaunchDetails.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 6E1091AF23A4534C00DCEF38 /* LaunchDetails.graphql */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +62,7 @@
 		6E10919123A437FA00DCEF38 /* RocketReserverUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketReserverUITests.swift; sourceTree = "<group>"; };
 		6E10919323A437FA00DCEF38 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E1091AB23A4409A00DCEF38 /* schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = schema.json; path = RocketReserver/schema.json; sourceTree = SOURCE_ROOT; };
+		6E1091AF23A4534C00DCEF38 /* LaunchDetails.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = LaunchDetails.graphql; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E1091AE23A44D9900DCEF38 /* SDWebImage in Frameworks */,
 				6E1091A623A43DA000DCEF38 /* Apollo in Frameworks */,
 				6E1091A823A43DA000DCEF38 /* ApolloWebSocket in Frameworks */,
 			);
@@ -119,6 +123,7 @@
 				6E1091A923A43DFE00DCEF38 /* Resources */,
 				6E10917D23A437FA00DCEF38 /* Info.plist */,
 				38DCCE1B23A4449600AC5169 /* Launch.graphql */,
+				6E1091AF23A4534C00DCEF38 /* LaunchDetails.graphql */,
 				38DCCE1F23A4468600AC5169 /* Network.swift */,
 			);
 			path = RocketReserver;
@@ -174,6 +179,7 @@
 			packageProductDependencies = (
 				6E1091A523A43DA000DCEF38 /* Apollo */,
 				6E1091A723A43DA000DCEF38 /* ApolloWebSocket */,
+				6E1091AD23A44D9900DCEF38 /* SDWebImage */,
 			);
 			productName = RocketReserver;
 			productReference = 6E10916A23A437F600DCEF38 /* RocketReserver.app */;
@@ -249,6 +255,7 @@
 			mainGroup = 6E10916123A437F600DCEF38;
 			packageReferences = (
 				6E1091A423A43DA000DCEF38 /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				6E1091AC23A44D9900DCEF38 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 6E10916B23A437F600DCEF38 /* Products */;
 			projectDirPath = "";
@@ -269,6 +276,7 @@
 				6E10917C23A437FA00DCEF38 /* LaunchScreen.storyboard in Resources */,
 				6E10917923A437FA00DCEF38 /* Assets.xcassets in Resources */,
 				38DCCE1C23A4449600AC5169 /* Launch.graphql in Resources */,
+				6E1091B023A4534C00DCEF38 /* LaunchDetails.graphql in Resources */,
 				6E10917723A437F600DCEF38 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -661,6 +669,14 @@
 				minimumVersion = 0.20.0;
 			};
 		};
+		6E1091AC23A44D9900DCEF38 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.4.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -673,6 +689,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6E1091A423A43DA000DCEF38 /* XCRemoteSwiftPackageReference "apollo-ios" */;
 			productName = ApolloWebSocket;
+		};
+		6E1091AD23A44D9900DCEF38 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E1091AC23A44D9900DCEF38 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
