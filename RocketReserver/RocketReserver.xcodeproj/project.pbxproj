@@ -105,13 +105,11 @@
 		6E10916C23A437F600DCEF38 /* RocketReserver */ = {
 			isa = PBXGroup;
 			children = (
-				6E10916D23A437F600DCEF38 /* AppDelegate.swift */,
-				6E10916F23A437F600DCEF38 /* SceneDelegate.swift */,
 				6E10917123A437F600DCEF38 /* MasterViewController.swift */,
 				6E10917323A437F600DCEF38 /* DetailViewController.swift */,
 				6E10917523A437F600DCEF38 /* Main.storyboard */,
-				6E10917823A437FA00DCEF38 /* Assets.xcassets */,
 				6E10917A23A437FA00DCEF38 /* LaunchScreen.storyboard */,
+				6E1091A923A43DFE00DCEF38 /* Resources */,
 				6E10917D23A437FA00DCEF38 /* Info.plist */,
 			);
 			path = RocketReserver;
@@ -133,6 +131,16 @@
 				6E10919323A437FA00DCEF38 /* Info.plist */,
 			);
 			path = RocketReserverUITests;
+			sourceTree = "<group>";
+		};
+		6E1091A923A43DFE00DCEF38 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6E10917823A437FA00DCEF38 /* Assets.xcassets */,
+				6E10916D23A437F600DCEF38 /* AppDelegate.swift */,
+				6E10916F23A437F600DCEF38 /* SceneDelegate.swift */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
